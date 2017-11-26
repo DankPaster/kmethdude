@@ -1,0 +1,85 @@
+
+	/*
+	inline Vector2D RotatePoint(Vector2D p, float ang)
+	{
+		return Vector2D(p.x * cos(ang) - p.y * sin(ang), p.y * cos(ang) + p.x * sin(ang));
+	}
+
+	class Snowflake : public CBaseRenderable
+	{
+	public:
+		Snowflake(float r, float s, Vector2D p)
+		{
+			Rotation = r;
+			Size = s;
+			SetPosition(p, false);
+		}
+		virtual void Update()
+		{
+			float WindDirection = sin((std::clock() - start) * 0.1f / (double)CLOCKS_PER_SEC) * 4.0f;
+			Rotation = (std::clock() - start) * 0.0003 * Size;
+			Vector2D PushBack = CursorPos - GetPosition();
+			float Dist = PushBack.Length();
+			if (Dist > 400)
+				PushBack = Vector2D(0, 0);
+			else
+				PushBack = PushBack.Normalized() * 350 / (max(Dist, 20) + 1);
+			SetPosition(Vector2D(GetPosition().x + (WindDirection * Size) / 3.0f - PushBack.x, GetPosition().y + max(Size / 3.0f - PushBack.y, 1)));
+			CBaseRenderable::Update();
+		}
+		virtual void Draw()
+		{
+			float s = sin(Rotation);
+			float c = cos(Rotation);
+			auto p = GetPosition();
+			DrawFilledQuadOneSided(p + RotatePoint(Vector2D(1, 1), Rotation) * Size,
+									p + RotatePoint(Vector2D(-1, 1), Rotation) * Size,
+									p + RotatePoint(Vector2D(-1, -1), Rotation) * Size,
+									p + RotatePoint(Vector2D(1, -1), Rotation) * Size,
+									Color(192, 192, 192, GetOpacity() * Size / 16.0f));
+			DrawFilledQuadOneSided(p + RotatePoint(Vector2D(1, 1), Rotation + M_PI / 4) * Size,
+									p + RotatePoint(Vector2D(-1, 1), Rotation + M_PI / 4) * Size,
+									p + RotatePoint(Vector2D(-1, -1), Rotation + M_PI / 4) * Size,
+									p + RotatePoint(Vector2D(1, -1), Rotation + M_PI / 4) * Size,
+									Color(192, 192, 192, GetOpacity() * Size / 16.0f));
+			CBaseRenderable::Draw();
+		}
+	protected:
+		float Rotation = 0;
+		float Size = 0;
+	};
+
+	std::vector<Snowflake*> Snowflakes;
+	void DrawBackdrop()
+	{
+		float WindDirection = sin((std::clock() - start) * 0.1f / (double)CLOCKS_PER_SEC) * 4.0f;
+		if (!(rand() % 7))
+			Snowflakes.push_back(new Snowflake((rand() % 120) / 63.0f, (rand() % 6) + 2, Vector2D((rand() % (int)ScreenSize.x - 16) - 8, -16)));
+		if (!(rand() % 7))
+		{
+			if (WindDirection > 1)
+				Snowflakes.push_back(new Snowflake((rand() % 120) / 63.0f, (rand() % 6) + 2, Vector2D(-16, (rand() % (int)ScreenSize.y) - 8)));
+			else if (WindDirection < 1)
+				Snowflakes.push_back(new Snowflake((rand() % 120) / 63.0f, (rand() % 6) + 2, Vector2D((int)ScreenSize.x + 16, (rand() % (int)ScreenSize.y) - 8)));
+		}
+
+		DrawGradientVertRect(IntRect{ 0, 0, (int)ScreenSize.x, (int)ScreenSize.y }, Color(0, 255, 255, 0), Color(0, 32, 80, MenuAlpha / 4.0f), 16);
+		for (auto i = Snowflakes.begin(); i < Snowflakes.end();)
+		{
+			if ((*i)->GetPosition().y > ScreenSize.y + 32 || (*i)->GetPosition().x < -32 || (*i)->GetPosition().x > ScreenSize.x + 32)
+			{
+				delete (*i);
+				i = Snowflakes.erase(i);
+			}
+			else
+			{
+				(*i)->SetOpacity(MenuAlpha);
+				(*i)->Update();
+				(*i)->Draw();
+				i++;
+			}
+		}
+	}
+	*/
+
+	//DrawBackdrop();
